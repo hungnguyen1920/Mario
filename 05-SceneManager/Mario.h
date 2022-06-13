@@ -6,12 +6,13 @@
 
 #include "debug.h"
 
-#define MARIO_WALKING_SPEED		0.1f
+#define MARIO_WALKING_SPEED		0.15f
+#define MARIO_DECELERATE_SPEED 0.00012f
 #define MARIO_RUNNING_SPEED		0.2f
 #define MARIO_RUNNING_MAX_SPEED 0.3f
 
-#define MARIO_ACCEL_WALK_X	0.0005f
-#define MARIO_ACCEL_RUN_X	0.0007f
+#define MARIO_ACCEL_WALK_X	0.00015f
+#define MARIO_ACCEL_RUN_X	0.00025f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
@@ -20,8 +21,9 @@
 #define MARIO_JUMP_SPEED_MAX 0.28f
 
 #define MARIO_RACCOON_FLAPPING_SPEED 0.0025f
+#define MARIO_RACCOON_FALL_SLOW_SPEED 0.03f
 
-#define MARIO_GRAVITY			0.002f
+#define MARIO_GRAVITY			0.0015f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
@@ -43,6 +45,7 @@
 
 #define MARIO_RACOON_STATE_FLY 800
 #define MARIO_RACCOON_STATE_FLAPPING 801
+#define MARIO_RACCOON_STATE_FALL_SLOW 802
 #define MARIO_STATE_FALL 302
 
 
@@ -159,6 +162,9 @@
 #define ID_ANI_MARIO_RACCOON_FALL_FLY_RIGHT 12027
 #define ID_ANI_MARIO_RACCOON_FALL_FLY_LEFT	12028
 
+#define ID_ANI_MARIO_RACCOON_FALL_SLOW_RIGHT 12029
+#define ID_ANI_MARIO_RACCOON_FALL_SLOW_LEFT	12030
+
 // FIRE
 
 #define ID_ANI_MARIO_FIRE_IDLE_RIGHT 13001
@@ -229,7 +235,7 @@
 #define POWER_STACK_TIME 250
 #define POWER_STACK_LOST_TIME 250
 #define LIMIT_MARIO_RACCOON_FLY_TIME 5000
-#define MARIO_POWER_FULL 6
+#define MARIO_POWER_FULL 7
 
 class CMario : public CGameObject
 {
@@ -268,18 +274,20 @@ public:
 		isRunning = false;
 		coin = 0;
 		isRunningMax = false;
-		isWalking = false;
-		isJumpping = false;
+	
 	}
 	BOOLEAN isSitting;
 	BOOLEAN isOnPlatform;
 	BOOLEAN isRunning;
 	BOOLEAN isRunningMax;
-	BOOLEAN isWalking;
-	BOOLEAN isJumpping;
 	BOOLEAN isFlying;
-	BOOLEAN isFlapping = false;
-
+	BOOLEAN isFlapping;
+	BOOLEAN canFallSlow;
+	BOOLEAN isFallSlowing;
+	BOOLEAN isBlocked;
+	BOOLEAN isFallNormal;
+	BOOLEAN isChangeDirection = false;
+	BOOLEAN isWalking;
 	int powerStack = 0;
 
 	void SetIsRunning(BOOLEAN run) { isRunning = run; }
@@ -291,7 +299,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
-
+	void Decelerate();
 	int IsCollidable()
 	{ 
 		return (state != MARIO_STATE_DIE); 

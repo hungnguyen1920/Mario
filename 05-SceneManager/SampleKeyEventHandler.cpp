@@ -32,9 +32,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_DIE);
 		break;
 	case DIK_S:
-		if (mario->GetLevel() == MARIO_LEVEL_RACCOON && mario->isFlying) {
-			mario->isFlapping = true;
-			mario->SetState(MARIO_RACCOON_STATE_FLAPPING);
+		if (mario->GetLevel() == MARIO_LEVEL_RACCOON) {
+			if (mario->isFlying) {
+				mario->isFlapping = true;
+				mario->SetState(MARIO_RACCOON_STATE_FLAPPING);
+			} 
+			else if (mario->canFallSlow) {
+				mario->SetState(MARIO_RACCOON_STATE_FALL_SLOW);
+			}
 		}
 		mario->SetState(MARIO_STATE_JUMP);
 		break;
@@ -52,16 +57,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		mario->isFallSlowing = false;
 		break;
 	case DIK_DOWN:
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
-		break;
-	case DIK_RIGHT:
-		mario->isWalking = false;
-		break;
-	case DIK_LEFT:
-		mario->isWalking = false;
 		break;
 	case DIK_A:
 		mario->SetIsRunning(false);
