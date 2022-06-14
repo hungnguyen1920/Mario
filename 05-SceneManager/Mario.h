@@ -84,8 +84,8 @@
 #define ID_ANI_MARIO_HOLD_LEFT 10020
 #define ID_ANI_MARIO_HOLD_WALK_RIGHT 10021
 #define ID_ANI_MARIO_HOLD_WALK_LEFT 10022
-#define ID_ANI_MARIO_HOLD_KICK_RIGHT 10023
-#define ID_ANI_MARIO_HOLD_KICK_LEFT 10024
+#define ID_ANI_MARIO_KICK_RIGHT 10023
+#define ID_ANI_MARIO_KICK_LEFT 10024
 
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 11001
@@ -116,8 +116,8 @@
 #define ID_ANI_MARIO_SMALL_HOLD_IDLE_LEFT 11019
 #define	ID_ANI_MARIO_SMALL_HOLD_WALK_RIGHT 11020
 #define ID_ANI_MARIO_SMALL_HOLD_WALK_LEFT 11021
-#define ID_ANI_MARIO_SMALL_HOLD_KICK_RIGHT 11022
-#define ID_ANI_MARIO_SMALL_HOLD_KICK_LEFT 11023
+#define ID_ANI_MARIO_SMALL_KICK_RIGHT 11022
+#define ID_ANI_MARIO_SMALL_KICK_LEFT 11023
 
 // RACCOON
 
@@ -199,8 +199,8 @@
 #define ID_ANI_MARIO_FIRE_HOLD_WALK_RIGHT 13021
 #define ID_ANI_MARIO_FIRE_HOLD_WALK_LEFT 13022
 
-#define ID_ANI_MARIO_FIRE_HOLD_KICK_RIGHT 13023
-#define ID_ANI_MARIO_FIRE_HOLD_KICK_LEFT 13024
+#define ID_ANI_MARIO_FIRE_KICK_RIGHT 13023
+#define ID_ANI_MARIO_FIRE_KICK_LEFT 13024
 
 #define ID_ANI_MARIO_FIRE_SHOOT_FIRE_RIGHT 13025
 #define ID_ANI_MARIO_FIRE_SHOOT_FIRE_LEFT 13026
@@ -235,6 +235,8 @@
 #define POWER_STACK_TIME 250
 #define POWER_STACK_LOST_TIME 250
 #define LIMIT_MARIO_RACCOON_FLY_TIME 5000
+#define MARIO_KICK_TIMEOUT 300
+
 #define MARIO_POWER_FULL 7
 
 class CMario : public CGameObject
@@ -251,6 +253,7 @@ class CMario : public CGameObject
 	int coin; 
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 
@@ -288,6 +291,8 @@ public:
 	BOOLEAN isFallNormal;
 	BOOLEAN isChangeDirection = false;
 	BOOLEAN isWalking;
+	BOOLEAN isKicking = false;
+
 	int powerStack = 0;
 
 	void SetIsRunning(BOOLEAN run) { isRunning = run; }
@@ -295,6 +300,7 @@ public:
 	DWORD running_start;
 	DWORD running_stop;
 	DWORD flying_start;
+	DWORD kick_start = -1;
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
