@@ -38,6 +38,7 @@
 #define MARIO_STATE_RUNNING_RIGHT	400
 #define MARIO_STATE_RUNNING_LEFT	500
 #define MARIO_STATE_RELEASE_RUN 401
+#define MARIO_STATE_KICK 402
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
@@ -83,8 +84,8 @@
 #define ID_ANI_MARIO_FALL_RIGHT 10017
 #define ID_ANI_MARIO_FALL_LEFT 10018
 
-#define ID_ANI_MARIO_HOLD_RIGHT 10019
-#define ID_ANI_MARIO_HOLD_LEFT 10020
+#define ID_ANI_MARIO_HOLD_IDLE_RIGHT 10019
+#define ID_ANI_MARIO_HOLD_IDLE_LEFT 10020
 #define ID_ANI_MARIO_HOLD_WALK_RIGHT 10021
 #define ID_ANI_MARIO_HOLD_WALK_LEFT 10022
 #define ID_ANI_MARIO_KICK_RIGHT 10023
@@ -242,6 +243,7 @@
 #define MARIO_DELAY_SHOOT 500
 #define MARIO_TIME_DURING_SHOOT 300
 #define MARIO_POWER_FULL 7
+#define MARIO_FIRE_BALL_LIMIT 2
 
 class CMario : public CGameObject
 {
@@ -295,7 +297,7 @@ public:
 	BOOLEAN isWalking = false;
 	BOOLEAN isKicking = false;
 	BOOLEAN isShooting = false;
-	BOOLEAN canShoot = true;
+	BOOLEAN isHoldTurtle = false;
 	int powerStack = 0;
 
 	void SetIsRunning(BOOLEAN run) { isRunning = run; }

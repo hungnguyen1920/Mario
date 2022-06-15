@@ -10,7 +10,7 @@ CKoopas::CKoopas(float x, float y, int model) :CGameObject(x, y)
 	this->ay = KOOPAS_GRAVITY;
 	this->model = model;
 	defend_start = -1;
-
+	isHeld = false;
 	if (model == KOOPAS_GREEN_WING) {
 		SetState(KOOPAS_STATE_JUMP);
 	}
@@ -87,6 +87,27 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	
+	CGameObject::SetState(state);
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if (mario->isHoldTurtle) {
+		if (mario->GetDirection() > 0) {
+			x = mario->GetX() + KOOPAS_POSITION_ABSOLUTE_MARIO;
+			y = mario->GetY();
+		}
+		else {
+			x = mario->GetX() - KOOPAS_POSITION_ABSOLUTE_MARIO;
+			y = mario->GetY();
+		}
+		ay = 0;
+		isHeld = true;
+	}
+	else {
+		if (isHeld) {
+			SetState(KOOPAS_STATE_IS_KICKED);
+		}
+	}
 
 	// start animation comeback
 
@@ -256,7 +277,7 @@ void CKoopas::SetState(int state)
 {
 	CGameObject::SetState(state);
 	CMario * mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	mario_nx = mario->GetDirection();
+
 	switch (state)
 	{
 	case KOOPAS_STATE_WALKING:
@@ -284,7 +305,8 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_IS_KICKED:
 		isKicked = true;
-		vx = mario_nx*KOOPAS_IS_KICKED_SPEED;
+		isHeld = false;
+		vx = mario->GetDirection() * KOOPAS_IS_KICKED_SPEED;
 		break;
 	case KOOPAS_STATE_JUMP:
 		vx = 0.04f;

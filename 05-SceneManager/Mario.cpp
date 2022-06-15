@@ -67,7 +67,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isOnPlatform = false;
 	}
 
-	if (GetTickCount64() - running_start > POWER_STACK_TIME && isRunning)
+	if (GetTickCount64() - running_start > POWER_STACK_TIME && isRunning && !isHoldTurtle)
 	{
 		running_start = GetTickCount64();
 		powerStack++;
@@ -101,18 +101,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	if (GetTickCount64() - kick_start > MARIO_KICK_TIMEOUT && isKicking) {
-		kick_start = -1;
 		isKicking = false;
+		kick_start = -1;
 	}
 
 	if (GetTickCount64() - shoot_start > 500 && isShooting) {
-		shoot_start = -1;
 		isShooting = false;
+		shoot_start = -1;
 	}
 
 	if (isShooting && level == MARIO_LEVEL_FIRE)
 	{
-		if (ListFire.size() < 2)
+		if (ListFire.size() < MARIO_FIRE_BALL_LIMIT)
 		{
 			ShootFire();
 			isShooting = false;
@@ -221,25 +221,18 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	else if(e->nx != 0)
 	{
 		if (koopas->GetState() == KOOPAS_STATE_DEFEND || koopas->GetState() == KOOPAS_STATE_UPSIDE) {
-			isKicking = true;
-			kick_start = GetTickCount64();
-			koopas->SetState(KOOPAS_STATE_IS_KICKED);
-		}
-		else {
-			if (untouchable == 0)
-			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
-				}
+			if (isRunning) {
+				isHoldTurtle = true;
+				powerStack = 0;		
+			}
+			else {
+				SetState(MARIO_STATE_KICK);
+				koopas->SetState(KOOPAS_STATE_IS_KICKED);
 			}
 		}
+	}
+	else if (e->ny > 0) {
+		
 	}
 }
 
@@ -300,6 +293,19 @@ int CMario::GetAniIdSmall()
 				aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
 			else
 				aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
+		}
+		else if (isHoldTurtle) {
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_SMALL_HOLD_IDLE_LEFT;
+			}
+			else if (vx > 0) {
+				aniId = ID_ANI_MARIO_SMALL_HOLD_WALK_RIGHT;
+			}
+			else {
+				aniId = ID_ANI_MARIO_SMALL_HOLD_WALK_LEFT;
+			}
 		}
 		else
 			if (vx == 0)
@@ -380,6 +386,19 @@ int CMario::GetAniIdBig()
 				aniId = ID_ANI_MARIO_KICK_RIGHT;
 			else
 				aniId = ID_ANI_MARIO_KICK_LEFT;
+		}
+		else if (isHoldTurtle) {
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_HOLD_IDLE_LEFT;
+			}
+			else if (vx > 0) {
+				aniId = ID_ANI_MARIO_HOLD_WALK_RIGHT;
+			}
+			else {
+				aniId = ID_ANI_MARIO_HOLD_WALK_LEFT;
+			}
 		}
 		else
 		{
@@ -482,6 +501,19 @@ int CMario::GetAniIdRaccoon()
 			else
 				aniId = ID_ANI_MARIO_RACCOON_KICK_LEFT;
 		}
+		else if (isHoldTurtle) {
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_RACCOON_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_RACCOON_HOLD_IDLE_LEFT;
+			}
+			else if (vx > 0) {
+				aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_RIGHT;
+			}
+			else {
+				aniId = ID_ANI_MARIO_RACCOON_HOLD_WALK_LEFT;
+			}
+		}
 		else
 		{
 			if (vx == 0)
@@ -572,6 +604,19 @@ int CMario::GetAniIdFire()
 			else
 				aniId = ID_ANI_MARIO_FIRE_SHOOT_FIRE_LEFT;
 		}
+		else if (isHoldTurtle) {
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_FIRE_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_FIRE_HOLD_IDLE_LEFT;
+			}
+			else if (vx > 0) {
+				aniId = ID_ANI_MARIO_FIRE_HOLD_WALK_RIGHT;
+			}
+			else {
+				aniId = ID_ANI_MARIO_FIRE_HOLD_WALK_LEFT;
+			}
+		}
 		else
 		{
 			if (vx == 0)
@@ -647,12 +692,12 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
 		running_start = GetTickCount64();
-		ax = MARIO_ACCEL_RUN_X;
+
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		running_start = GetTickCount64();
-		ax = -MARIO_ACCEL_RUN_X;
+		
 		nx = -1;
 		break;
 	case MARIO_STATE_RELEASE_RUN:
@@ -696,6 +741,10 @@ void CMario::SetState(int state)
 		isFallSlowing = true;
 		vy = -MARIO_RACCOON_FALL_SLOW_SPEED;
 		break;
+	case MARIO_STATE_KICK:
+		isKicking = true;
+		kick_start = GetTickCount64();
+		break;
 	case MARIO_STATE_SIT:
 		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
 		{
@@ -718,7 +767,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_SHOOTING:
 		isShooting = true;
 		shoot_start = GetTickCount64();
-		canShoot = false;
+
 		break;
 	case MARIO_STATE_IDLE:
 		Decelerate();

@@ -10,11 +10,11 @@
 #define KOOPAS_BBOX_WIDTH 16
 #define KOOPAS_BBOX_HEIGHT 26
 #define KOOPAS_BBOX_HEIGHT_DEFEND 16
-
+#define KOOPAS_POSITION_ABSOLUTE_MARIO 14
 #define KOOPAS_COMBACK_HEIGHT_ADJUST 0.15f;
 
-#define KOOPAS_DEFEND_TIMEOUT 8000 // thời gian hết thời gian ( ra khỏi mai rùa và bắt đầu đi)
-#define KOOPAS_COMBACK_START 5000 //thời gian tính từ lúc defend đến lúc có hiệu ứng comeback
+#define KOOPAS_DEFEND_TIMEOUT 8000 // hết thời gian defend ( ra khỏi mai rùa và bắt đầu đi)
+#define KOOPAS_COMBACK_START 6000 //thời gian tính từ lúc defend đến lúc có hiệu ứng comeback
 
 #define KOOPAS_STATE_WALKING 100
 #define KOOPAS_STATE_DEFEND 200
@@ -64,7 +64,6 @@ protected:
 	BOOLEAN isKicked;
 	BOOLEAN isComeback;
 	BOOLEAN isUpside;
-	BOOLEAN isFloat = true;
 
 	int mario_nx;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -81,4 +80,5 @@ protected:
 public:
 	CKoopas(float x, float y, int model);
 	virtual void SetState(int state);
+	BOOLEAN isHeld;
 };
