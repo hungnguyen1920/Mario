@@ -43,6 +43,13 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		}
 		mario->SetState(MARIO_STATE_JUMP);
 		break;
+	case DIK_A:
+		if (mario->GetLevel() == MARIO_LEVEL_FIRE) {
+			if (!mario->isShooting ) {
+				mario->SetState(MARIO_STATE_SHOOTING);
+			}
+		}
+		break;
 	case DIK_R: // reset
 		//Reload();
 		break;
@@ -63,8 +70,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		mario->SetState(MARIO_STATE_SIT_RELEASE);
 		break;
 	case DIK_A:
-		mario->SetIsRunning(false);
-		mario->running_stop = GetTickCount64();
+		mario->SetState(MARIO_STATE_RELEASE_RUN);
 		break;
 	}
 }
@@ -104,6 +110,10 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		if (mario->isSitting) {
 			mario->SetState(MARIO_STATE_SIT_RELEASE);
 		}
+	}
+	else if (game->IsKeyDown(DIK_A))
+	{
+		
 	}
 	else if (game->IsKeyDown(DIK_S))
 	{

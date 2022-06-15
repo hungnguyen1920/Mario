@@ -18,7 +18,7 @@
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
 #define MARIO_ACCEL_JUMP_Y 0.0005f
 #define MARIO_JUMP_SPEED_MIN 0.18f
-#define MARIO_JUMP_SPEED_MAX 0.28f
+#define MARIO_JUMP_SPEED_MAX 0.3f
 
 #define MARIO_RACCOON_FLAPPING_SPEED 0.0025f
 #define MARIO_RACCOON_FALL_SLOW_SPEED 0.03f
@@ -37,6 +37,7 @@
 
 #define MARIO_STATE_RUNNING_RIGHT	400
 #define MARIO_STATE_RUNNING_LEFT	500
+#define MARIO_STATE_RELEASE_RUN 401
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
@@ -46,6 +47,8 @@
 #define MARIO_RACOON_STATE_FLY 800
 #define MARIO_RACCOON_STATE_FLAPPING 801
 #define MARIO_RACCOON_STATE_FALL_SLOW 802
+
+#define MARIO_STATE_SHOOTING 803
 #define MARIO_STATE_FALL 302
 
 
@@ -236,7 +239,8 @@
 #define POWER_STACK_LOST_TIME 250
 #define LIMIT_MARIO_RACCOON_FLY_TIME 5000
 #define MARIO_KICK_TIMEOUT 300
-
+#define MARIO_DELAY_SHOOT 500
+#define MARIO_TIME_DURING_SHOOT 300
 #define MARIO_POWER_FULL 7
 
 class CMario : public CGameObject
@@ -261,7 +265,7 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 	int GetAniIdRaccoon();
 	int GetAniIdFire();
-
+	void ShootFire();
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
@@ -269,7 +273,6 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-
 		level = MARIO_LEVEL_BIG;
 		untouchable = 0;
 		untouchable_start = -1;
@@ -279,20 +282,20 @@ public:
 		isRunningMax = false;
 	
 	}
-	BOOLEAN isSitting;
-	BOOLEAN isOnPlatform;
-	BOOLEAN isRunning;
-	BOOLEAN isRunningMax;
-	BOOLEAN isFlying;
-	BOOLEAN isFlapping;
-	BOOLEAN canFallSlow;
-	BOOLEAN isFallSlowing;
-	BOOLEAN isBlocked;
-	BOOLEAN isFallNormal;
-	BOOLEAN isChangeDirection = false;
-	BOOLEAN isWalking;
+	BOOLEAN isSitting = false;
+	BOOLEAN isOnPlatform = false;
+	BOOLEAN isRunning = false;
+	BOOLEAN isRunningMax = false;
+	BOOLEAN isFlying = false;
+	BOOLEAN isFlapping = false;
+	BOOLEAN canFallSlow = false;
+	BOOLEAN isFallSlowing = false;
+	BOOLEAN isBlocked = false;
+	BOOLEAN isFallNormal = false;
+	BOOLEAN isWalking = false;
 	BOOLEAN isKicking = false;
-
+	BOOLEAN isShooting = false;
+	BOOLEAN canShoot = true;
 	int powerStack = 0;
 
 	void SetIsRunning(BOOLEAN run) { isRunning = run; }
@@ -301,6 +304,9 @@ public:
 	DWORD running_stop;
 	DWORD flying_start;
 	DWORD kick_start = -1;
+	DWORD shoot_start;
+	
+	vector<LPGAMEOBJECT> ListFire;
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

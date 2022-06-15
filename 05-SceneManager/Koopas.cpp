@@ -3,14 +3,20 @@
 #include "Game.h"
 #include "Mario.h"
 #include "PlayScene.h"
-
-CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
+#include "Platform.h"
+CKoopas::CKoopas(float x, float y, int model) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
+	this->model = model;
 	defend_start = -1;
 
-	SetState(KOOPAS_STATE_WALKING);
+	if (model == KOOPAS_GREEN_WING) {
+		SetState(KOOPAS_STATE_JUMP);
+	}
+	else {
+		SetState(KOOPAS_STATE_WALKING);
+	}
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -37,6 +43,24 @@ void CKoopas::OnNoCollision(DWORD dt)
 	y += vy * dt;
 };
 
+void CKoopas::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+
+	if (e->ny < 0) {
+		if (state == KOOPAS_STATE_WALKING && model == KOOPAS_RED) {
+			if ( x <= e->obj->GetX() - ADJUST_X_TO_RED_CHANGE_DIRECTION)
+			{
+				vy = 0;
+				vx = KOOPAS_WALKING_SPEED;
+			}
+			else if (x + KOOPAS_BBOX_WIDTH >= e->obj->GetX() + 520) {
+				vy = 0;
+				vx = -KOOPAS_WALKING_SPEED;
+			}
+		}
+	}
+}
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
@@ -45,11 +69,18 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		if (model == KOOPAS_GREEN_WING && state == KOOPAS_STATE_JUMP) {
+			vy = -KOOPAS_WING_JUMP_SPEED;
+			ay = KOOPAS_WING_GRAVITY;
+		}
 	}
 	else if (e->nx != 0)
 	{
 		vx = -vx;
 	}
+
+	if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatform(e);
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -67,6 +98,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (GetTickCount64() - defend_start > KOOPAS_DEFEND_TIMEOUT && (isDefend || isUpside) && !isKicked) {
 		SetState(KOOPAS_STATE_WALKING);
 		defend_start = -1;
+		vy = -KOOPAS_COMBACK_HEIGHT_ADJUST;
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -76,36 +108,59 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopas::Render()
 {
-	int aniId = -1;
-	
+	int aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
+
+	if (model == KOOPAS_GREEN_WING) {
 		if (vx > 0) {
-			if (state == KOOPAS_STATE_WALKING) {
-				aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
-			} 
-			else if (isKicked) {
-				if (isDefend) {
-					aniId = ID_ANI_KOOPAS_IS_KICKED;
-				} 
-				else if (isUpside) {
-					aniId = ID_ANI_KOOPAS_UPSIDE_ISKICKED;
-				}
-			}
+			aniId = ID_ANI_KOOPAS_GREEN_WING_RIGHT;
 		}
 		else {
-			if (state == KOOPAS_STATE_WALKING) {
-				aniId = ID_ANI_KOOPAS_WALKING_LEFT;
+			aniId = ID_ANI_KOOPAS_GREEN_WING_LEFT;
+		}
+	}
+
+	if (model == KOOPAS_GREEN || model == KOOPAS_GREEN_WING)
+	{
+		if (vx > 0)
+		{
+			if (state == KOOPAS_STATE_WALKING)
+			{
+				aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
 			}
-			else if (isKicked) {
-				if (isDefend) {
+			else if (isKicked)
+			{
+				if (isDefend)
+				{
 					aniId = ID_ANI_KOOPAS_IS_KICKED;
 				}
-				else if (isUpside) {
+				else if (isUpside)
+				{
 					aniId = ID_ANI_KOOPAS_UPSIDE_ISKICKED;
 				}
 			}
 		}
-		if (!isKicked) {
-			if(isDefend) {
+		else
+		{
+			if (state == KOOPAS_STATE_WALKING)
+			{
+				aniId = ID_ANI_KOOPAS_WALKING_LEFT;
+			}
+			else if (isKicked)
+			{
+				if (isDefend)
+				{
+					aniId = ID_ANI_KOOPAS_IS_KICKED;
+				}
+				else if (isUpside)
+				{
+					aniId = ID_ANI_KOOPAS_UPSIDE_ISKICKED;
+				}
+			}
+		}
+		if (!isKicked)
+		{
+			if (isDefend)
+			{
 				if (isComeback)
 				{
 					aniId = ID_ANI_KOOPAS_COMEBACK;
@@ -115,7 +170,8 @@ void CKoopas::Render()
 					aniId = ID_ANI_KOOPAS_DEFEND;
 				}
 			}
-			else if (isUpside) {
+			else if (isUpside)
+			{
 				if (isComeback)
 				{
 					aniId = ID_ANI_KOOPAS_UPSIDE_COMEBACK;
@@ -125,9 +181,73 @@ void CKoopas::Render()
 					aniId = ID_ANI_KOOPAS_IS_UPSIDE;
 				}
 			}
-			
 		}
-			
+	}
+	else if (model == KOOPAS_RED)
+	{
+		if (vx > 0)
+		{
+			if (state == KOOPAS_STATE_WALKING)
+			{
+				aniId = ID_ANI_KOOPAS_RED_WALKING_RIGHT;
+			}
+			else if (isKicked)
+			{
+				if (isDefend)
+				{
+					aniId = ID_ANI_KOOPAS_RED_IS_KICKED;
+				}
+				else if (isUpside)
+				{
+					aniId = ID_ANI_KOOPAS_RED_UPSIDE_ISKICKED;
+				}
+			}
+		}
+		else
+		{
+			if (state == KOOPAS_STATE_WALKING)
+			{
+				aniId = ID_ANI_KOOPAS_RED_WALKING_LEFT;
+			}
+			else if (isKicked)
+			{
+				if (isDefend)
+				{
+					aniId = ID_ANI_KOOPAS_RED_IS_KICKED;
+				}
+				else if (isUpside)
+				{
+					aniId = ID_ANI_KOOPAS_RED_UPSIDE_ISKICKED;
+				}
+			}
+		}
+		if (!isKicked)
+		{
+			if (isDefend)
+			{
+				if (isComeback)
+				{
+					aniId = ID_ANI_KOOPAS_RED_COMEBACK;
+				}
+				else
+				{
+					aniId = ID_ANI_KOOPAS_RED_DEFEND;
+				}
+			}
+			else if (isUpside)
+			{
+				if (isComeback)
+				{
+					aniId = ID_ANI_KOOPAS_RED_UPSIDE_COMEBACK;
+				}
+				else
+				{
+					aniId = ID_ANI_KOOPAS_RED_IS_UPSIDE;
+				}
+			}
+		}
+	}
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -140,7 +260,7 @@ void CKoopas::SetState(int state)
 	switch (state)
 	{
 	case KOOPAS_STATE_WALKING:
-		vx = KOOPAS_WALKING_SPEED;
+		vx = -KOOPAS_WALKING_SPEED;
 		isComeback = false;
 		isDefend = false;
 		isUpside = false;
@@ -165,6 +285,13 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_IS_KICKED:
 		isKicked = true;
 		vx = mario_nx*KOOPAS_IS_KICKED_SPEED;
+		break;
+	case KOOPAS_STATE_JUMP:
+		vx = 0.04f;
+		isComeback = false;
+		isDefend = false;
+		isUpside = false;
+		isKicked = false;
 		break;
 	}
 

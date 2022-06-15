@@ -100,7 +100,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
-
+	int model = 0;
+	if (tokens.size() >= 4) {
+		model = atof(tokens[3].c_str());
+	}
 	CGameObject *obj = NULL;
 
 	switch (object_type)
@@ -117,10 +120,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
+	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y, model); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-
 	case OBJECT_TYPE_PLATFORM:
 	{
 
