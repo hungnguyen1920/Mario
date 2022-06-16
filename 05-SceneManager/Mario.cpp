@@ -105,9 +105,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		kick_start = -1;
 	}
 
-	if (GetTickCount64() - shoot_start > 500 && isShooting) {
-		isShooting = false;
+	if (GetTickCount64() - shoot_start > MARIO_FIRE_TIME_SHOOT_EFFECT && canShoot) {
 		shoot_start = -1;
+		canShoot = false;
 	}
 
 	if (isShooting && level == MARIO_LEVEL_FIRE)
@@ -115,6 +115,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (ListFire.size() < MARIO_FIRE_BALL_LIMIT)
 		{
 			ShootFire();
+			canShoot = true;
 			isShooting = false;
 		}
 	}
@@ -267,16 +268,32 @@ int CMario::GetAniIdSmall()
 		else
 		{
 			if (vy < 0) {
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_SMALL_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_HOLD_JUMP_LEFT;
+				}
+				else {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
+				}
 			}
 			else {
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_SMALL_FALL_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_SMALL_FALL_LEFT;
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_SMALL_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_HOLD_JUMP_LEFT;
+				}
+				else {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_SMALL_FALL_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_FALL_LEFT;
+				}
 			}
 		}
 	}
@@ -360,16 +377,33 @@ int CMario::GetAniIdBig()
 		else
 		{
 			if (vy < 0) {
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_JUMP_WALK_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_JUMP_WALK_LEFT;
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_HOLD_JUMP_LEFT;
+				}
+				else {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_JUMP_WALK_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_JUMP_WALK_LEFT;
+				}
+				
 			}
 			else {
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_HOLD_JUMP_LEFT;
+				}
+				else {
 				if (nx >= 0)
 					aniId = ID_ANI_MARIO_FALL_RIGHT;
 				else
 					aniId = ID_ANI_MARIO_FALL_LEFT;
+				}
 			}
 		}
 	}
@@ -459,10 +493,26 @@ int CMario::GetAniIdRaccoon()
 		}
 		else
 		{
-			if (nx >= 0)
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
-			else
-				aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+			if (isHoldTurtle) {
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_HOLD_JUMP_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_HOLD_JUMP_LEFT;
+			}
+			else {
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_RACCOON_HOLD_JUMP_LEFT;
+				}
+				else {
+				if (nx >= 0)
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_RACCOON_JUMP_WALK_LEFT;
+				}
+			}
 		}
 		if (vy > 0) {
 			if (!isFlying) {
@@ -570,16 +620,33 @@ int CMario::GetAniIdFire()
 		else
 		{
 			if (vy < 0) {
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_FIRE_JUMP_WALK_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_FIRE_JUMP_WALK_LEFT;
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_FIRE_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_FIRE_HOLD_JUMP_LEFT;
+				}
+				else {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_FIRE_JUMP_WALK_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_FIRE_JUMP_WALK_LEFT;
+				}
 			}
 			else {
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_FIRE_FALL_RIGHT;
-				else
-					aniId = ID_ANI_MARIO_FIRE_FALL_LEFT;
+				if (isHoldTurtle) {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_FIRE_HOLD_JUMP_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_FIRE_HOLD_JUMP_LEFT;
+				}
+				else {
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_FIRE_FALL_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_FIRE_FALL_LEFT;
+				}
+				
 			}
 		}
 	}
@@ -597,7 +664,7 @@ int CMario::GetAniIdFire()
 			else
 				aniId = ID_ANI_MARIO_FIRE_KICK_LEFT;
 		}
-		else if (isShooting) {
+		else if (canShoot) {
 			if (nx > 0) {
 				aniId = ID_ANI_MARIO_FIRE_SHOOT_FIRE_RIGHT;
 			}

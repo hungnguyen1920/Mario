@@ -5,7 +5,7 @@ coin.txt
 cloud.txt
 brick.txt
 koopas.txt
-fireball.txt
+items.txt
 
 #
 [OBJECTS]
