@@ -6,6 +6,7 @@ cloud.txt
 brick.txt
 koopas.txt
 items.txt
+goomba.txt
 
 #
 [OBJECTS]

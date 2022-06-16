@@ -31,6 +31,7 @@ protected:
 	bool isDeleted; 
 
 public: 
+	int model = 0;
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }
@@ -44,6 +45,7 @@ public:
 	void RenderBoundingBox();
 	float GetX() { return this->x; }
 	float GetY() { return this->y; }
+	void SetModel(int model) { this->model = model; }
 	CGameObject();
 	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
 
