@@ -6,6 +6,9 @@
 
 #include "debug.h"
 
+// SPEED
+#pragma region MARIO_SPEED
+#define MARIO_WALKING_SPEED_MAX 0.15f
 #define MARIO_WALKING_SPEED		0.15f
 #define MARIO_DECELERATE_SPEED 0.00012f
 #define MARIO_RUNNING_SPEED		0.2f
@@ -26,6 +29,9 @@
 #define MARIO_GRAVITY			0.0015f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
+
+#pragma endregion
+// STATE
 
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
@@ -52,8 +58,6 @@
 #define MARIO_STATE_SHOOTING 803
 #define MARIO_STATE_FALL 302
 
-
-#define MARIO_WALKING_SPEED_MAX 0.15f
 
 #pragma region ANIMATION_ID
 
@@ -327,7 +331,6 @@ public:
 	BOOLEAN isAdjustHeight;
 	int powerStack = 0;
 
-	void SetIsRunning(BOOLEAN run) { isRunning = run; }
 
 	ULONGLONG running_start;
 	ULONGLONG running_stop;
@@ -337,6 +340,8 @@ public:
 	ULONGLONG transform_start;
 	
 	vector<LPGAMEOBJECT> ListFire;
+
+	void SetIsRunning(BOOLEAN run) { isRunning = run; }
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

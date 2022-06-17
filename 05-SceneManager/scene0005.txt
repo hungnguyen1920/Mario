@@ -49,9 +49,13 @@ piranhaPlant.txt
 #model = 1 ra tien
 
 ##### PIRANHA PLANT ######
-8	350	147
+#8	350	147
 ##### FIRE PIRANHA PLANT ######
 #MODEL = 1 BIG FIREPIRANHA PLANT
+
+#MODEL = 2 SMALL FIREPIRANHA PLANT
+9	250	142	1
+9	350	150	2
 
 ############ PIPE#############
 #model = 1 long pipe
@@ -60,5 +64,3 @@ piranhaPlant.txt
 7	350	150	2
 
 7	250	148	1
-#MODEL = 2 SMALL FIREPIRANHA PLANT
-9	250	142	1
