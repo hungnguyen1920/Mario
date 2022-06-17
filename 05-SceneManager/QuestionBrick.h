@@ -15,6 +15,8 @@
 #define QUESTION_BRICK_ITEM 2
 #define QUESTION_BRICK_COIN 1
 
+#define QUESTION_BRICK_STATE_UP 100
+
 class CQuestionBrick : public CGameObject
 {
 protected:

@@ -17,6 +17,7 @@
 #include "PiranhaPlant.h"
 #include "FirePiranhaPlant.h"
 #include "Map.h"
+#include "HUD.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -333,7 +334,12 @@ void CPlayScene::SetCam(float cx, float cy)
 }
 
 void CPlayScene::Render()
-{
+{	
+	CGame* game = CGame::GetInstance();
+	CHUD* hud = new CHUD(game->GetCamX()+122, game->GetCamY() + game->GetScreenHeight() - HUD_HEIGHT + 8);
+
+	hud->Render();
+	
 	map->DrawMap();
 
 	for (int i = 0; i < objects.size(); i++)
@@ -365,6 +371,9 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
+	delete map;
+	map = nullptr;
+	isTurnOnCamY = false;
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);

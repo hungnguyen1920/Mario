@@ -8,8 +8,8 @@
 
 // SPEED
 #pragma region MARIO_SPEED
-#define MARIO_WALKING_SPEED_MAX 0.15f
-#define MARIO_WALKING_SPEED		0.15f
+#define MARIO_WALKING_SPEED_MAX 0.1f
+#define MARIO_WALKING_SPEED		0.08f
 #define MARIO_DECELERATE_SPEED 0.00012f
 #define MARIO_RUNNING_SPEED		0.2f
 #define MARIO_RUNNING_MAX_SPEED 0.3f
@@ -313,9 +313,9 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;
-		isRunning = false;
 		coin = 0;
 		isRunningMax = false;
+		isHoldTurtle = false;
 	}
 
 	// DEFINE BOOLEAN VARIABLE
@@ -332,7 +332,7 @@ public:
 	BOOLEAN isWalking = false;
 	BOOLEAN isKicking = false;
 	BOOLEAN isShooting = false;
-	BOOLEAN isHoldTurtle = false;
+	BOOLEAN isHoldTurtle;
 	BOOLEAN canShoot;
 	BOOLEAN isTransform;
 	BOOLEAN isAdjustHeight;

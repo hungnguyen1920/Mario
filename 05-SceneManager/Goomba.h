@@ -29,7 +29,7 @@
 
 #define LIMIT_HIGH_LOW 0.25f
 #define LIMIT_HIGH_JUMP 0.4f
-#define LIMIT_TIME_WING_WALKING 5000
+#define LIMIT_TIME_WING_WALKING 1000
 #define LIMIT_JUMP_STACK 3
 
 #define JUMP_LOW_SPEED 0.25f
@@ -66,5 +66,4 @@ protected:
 public: 	
 	CGoomba(float x, float y, int model);
 	virtual void SetState(int state);
-	int GetModel() { return model; }
 };

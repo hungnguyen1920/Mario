@@ -1,5 +1,7 @@
 #pragma once
 
+#define HUD_HEIGHT 32
+
 #define TYPE_OBJECT 1
 #define TYPE_ENEMY 2
 #define TYPE_COIN 3

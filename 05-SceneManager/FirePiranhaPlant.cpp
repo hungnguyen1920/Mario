@@ -175,7 +175,7 @@ void CFirePiranhaPlant::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CFirePiranhaPlant::GetMarioRangeCurrent()

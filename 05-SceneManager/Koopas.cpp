@@ -6,6 +6,7 @@
 #include "Platform.h"
 #include "Goomba.h"
 #include "define.h"
+#include "QuestionBrick.h"
 CKoopas::CKoopas(float x, float y, int model) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -72,6 +73,8 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
 }
 
 int CKoopas::IsCollidable()
@@ -81,6 +84,17 @@ int CKoopas::IsCollidable()
 	}
 	else {
 		return 1;
+	}
+}
+
+void CKoopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+
+	if (e->nx != 0 && !questionBrick->isEmpty) {
+		if (state == KOOPAS_STATE_IS_KICKED) {
+			questionBrick->SetState(QUESTION_BRICK_STATE_UP);
+		}
 	}
 }
 
@@ -99,15 +113,6 @@ void CKoopas::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 				vy = 0;
 				vx = -KOOPAS_WALKING_SPEED;
 			}
-		}
-	}
-}
-
-void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
-	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	if (isKicked) {
-		if (e->nx != 0) {
-			
 		}
 	}
 }

@@ -104,7 +104,7 @@ void CQuestionBrick::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CQuestionBrick::SetState(int state)
@@ -112,5 +112,8 @@ void CQuestionBrick::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case QUESTION_BRICK_STATE_UP:
+		vy = -QUESTION_BRICK_SPEED_UP;
+		break;
 	}
 }

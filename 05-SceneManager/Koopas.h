@@ -77,7 +77,7 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
-	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 
 public:
 	CKoopas(float x, float y, int model);

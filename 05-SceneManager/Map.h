@@ -5,11 +5,12 @@
 #include "Utils.h"
 #include <string>
 #include "Textures.h"
+#include "define.h"
 
 #define TILE_WIDTH 16
 #define TILE_HEIGHT 16
 
-#define HUD_HEIGHT 32
+
 
 class Map
 {

@@ -83,7 +83,6 @@ void CPiranhaPlant::Render()
 {
 	int aniId = ID_ANI_PIRANHA_PLANT;
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
 }
 
 void CPiranhaPlant::SetState(int state)

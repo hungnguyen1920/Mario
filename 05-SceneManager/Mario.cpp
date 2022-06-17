@@ -14,6 +14,7 @@
 #include "Leaf.h"
 #include "MushRoom.h"
 #include "Flower.h"
+#include "define.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -178,7 +179,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		}
 	}
 	else if (e->nx != 0) {
-		isRunning = false;
+		if (e->obj->GetType() == OBJECT) {
+			SetState(MARIO_STATE_RELEASE_RUN);
+		}
 	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
@@ -265,8 +268,9 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		if (koopas->GetState() == KOOPAS_STATE_DEFEND || koopas->GetState() == KOOPAS_STATE_UPSIDE) {
-			if (isRunning) {
+			if (isRunning && !isHoldTurtle) {
 				isHoldTurtle = true;
+				isKicking = false;
 				powerStack = 0;
 			}
 			else {
@@ -304,7 +308,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e) {
 	CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 	if (e->ny > 0 && !questionBrick -> isEmpty) {
-		questionBrick->SetSpeed(0, -QUESTION_BRICK_SPEED_UP);
+		questionBrick->SetState(QUESTION_BRICK_STATE_UP);
 	}
 }
 
@@ -862,10 +866,12 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_RIGHT:
 		running_start = GetTickCount64();
 		nx = 1;
+		isRunning = true;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		running_start = GetTickCount64();
 		nx = -1;
+		isRunning = true;
 		break;
 	case MARIO_STATE_RELEASE_RUN:
 		isRunning = false;
@@ -917,7 +923,7 @@ void CMario::SetState(int state)
 		{
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
-			vx = 0;
+			Decelerate();
 			vy = 0.0f;
 			y += MARIO_SIT_HEIGHT_ADJUST;
 		}

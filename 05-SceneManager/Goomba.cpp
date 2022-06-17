@@ -105,8 +105,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (isOnPlatform && isOnAir) {
 						jumpStack++;
 						isOnAir = false;
-						SetState(GOOMBA_RED_WING_STATE_JUMP_LOW);
-						DebugOut(L"[INFO] jumpStack! %d \n", jumpStack);
+						SetState(GOOMBA_RED_WING_STATE_JUMP_LOW);				
 					}
 			}
 		}
@@ -180,7 +179,7 @@ void CGoomba::SetState(int state)
 			ay = 0; 
 			break;
 		case GOOMBA_RED_WING_STATE_WALKING:
-			vx = GOOMBA_WALKING_SPEED;
+			vx = -GOOMBA_WALKING_SPEED;
 			ay = GOOMBA_GRAVITY;
 			wing_walk_start = GetTickCount64();
 			isWalking = true;

@@ -150,13 +150,17 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="define.cpp" />
+    <ClCompile Include="EffectDisappear.cpp" />
+    <ClCompile Include="EffectScore.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="FirePiranhaPlant.cpp" />
     <ClCompile Include="Flower.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GoldBrick.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
@@ -173,6 +177,7 @@
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="Tail.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
@@ -186,13 +191,17 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="EffectDisappear.h" />
+    <ClInclude Include="EffectScore.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="FirePiranhaPlant.h" />
     <ClInclude Include="Flower.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GoldBrick.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Leaf.h" />
@@ -210,6 +219,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprites.h" />
+    <ClInclude Include="Tail.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utils.h" />
