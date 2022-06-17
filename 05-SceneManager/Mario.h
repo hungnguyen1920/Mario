@@ -94,6 +94,9 @@
 #define ID_ANI_MARIO_KICK_RIGHT 10023
 #define ID_ANI_MARIO_KICK_LEFT 10024
 
+#define ID_ANI_MARIO_TRANSFORM_RIGHT 11027
+#define ID_ANI_MARIO_TRANSFORM_LEFT 11028
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 11001
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT  11002
@@ -253,8 +256,11 @@
 #define MARIO_FIRE_TIME_SHOOT_EFFECT 500
 #define MARIO_DELAY_SHOOT 500
 #define MARIO_TIME_DURING_SHOOT 300
+#define MARIO_TRANSFORM_TIME_OUT 1000
+
 #define MARIO_POWER_FULL 7
 #define MARIO_FIRE_BALL_LIMIT 2
+#define ADJUST_HEIGHT_MARIO_SMALL_TRANSFORM_BIG 10
 
 class CMario : public CGameObject
 {
@@ -276,6 +282,7 @@ class CMario : public CGameObject
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
+	void OnCollisionWithFlower(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -313,15 +320,18 @@ public:
 	BOOLEAN isShooting = false;
 	BOOLEAN isHoldTurtle = false;
 	BOOLEAN canShoot;
+	BOOLEAN isTransform;
+	BOOLEAN isAdjustHeight;
 	int powerStack = 0;
 
 	void SetIsRunning(BOOLEAN run) { isRunning = run; }
 
-	DWORD running_start;
-	DWORD running_stop;
-	DWORD flying_start;
-	DWORD kick_start = -1;
-	DWORD shoot_start;
+	ULONGLONG running_start;
+	ULONGLONG running_stop;
+	ULONGLONG flying_start;
+	ULONGLONG kick_start = -1;
+	ULONGLONG shoot_start;
+	ULONGLONG transform_start;
 	
 	vector<LPGAMEOBJECT> ListFire;
 

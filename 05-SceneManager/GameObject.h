@@ -46,6 +46,7 @@ public:
 	float GetX() { return this->x; }
 	float GetY() { return this->y; }
 	void SetModel(int model) { this->model = model; }
+	int GetModel() { return model; }
 	CGameObject();
 	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
 

@@ -49,7 +49,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	/*CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();*/
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	if (isUnbox ) {
 		if (model == QUESTION_BRICK_ITEM) {
 			if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
@@ -62,8 +62,12 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				leaf->SetState(LEAF_STATE_UP);
 				objects.push_back(leaf);
 			}
+			else if (mario->GetLevel() == MARIO_LEVEL_RACCOON) {
+				CFlower* flower = new CFlower(x, y);
+				flower->SetState(FLOWER_STATE_UP);
+				objects.push_back(flower);
+			}
 		}
-		
 		isUnbox = false;
 	}
 

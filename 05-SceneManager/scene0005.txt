@@ -7,12 +7,13 @@ brick.txt
 koopas.txt
 items.txt
 goomba.txt
-
+pipe.txt
+piranhaPlant.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas. 4: coin
-# 6 = question brick
+# 6 = question brick, 7 = PIPE, 8 = piranhaplant, 9 = firePiranhaPlant
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
@@ -42,11 +43,21 @@ goomba.txt
 #50	200	160	216	180	1
 
 #GOOMBA
-#2	200	10	2
+2	200	10	1
 ############ question brick #######
 #model = 2 ra item la, nam, hoa
 #model = 1 ra tien
 
-6	350	100	2
-6	250	100	2
-6	450	100	2
+##### PIRANHA PLANT ######
+8	350	147
+##### FIRE PIRANHA PLANT ######
+#MODEL = 1 BIG FIREPIRANHA PLANT
+#MODEL = 2 SMALL FIREPIRANHA PLANT
+9	250	148	1
+############ PIPE#############
+#model = 1 long pipe
+#model = 2 medium pipe
+
+7	350	150	2
+
+7	250	148	1

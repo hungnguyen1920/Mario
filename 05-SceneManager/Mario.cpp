@@ -13,6 +13,7 @@
 #include "QuestionBrick.h"
 #include "Leaf.h"
 #include "MushRoom.h"
+#include "Flower.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -58,6 +59,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		ay = MARIO_GRAVITY;
 	}
 	//change direction when run max speed
+
+		
+	if (level == MARIO_LEVEL_RACCOON && vy > 0) {
+		canFallSlow = true;
+	}
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -108,6 +114,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		kick_start = -1;
 	}
 
+	if (GetTickCount64() - transform_start > MARIO_TRANSFORM_TIME_OUT && isTransform)
+	{
+		isTransform = false;
+		transform_start = -1;
+	}
+
+	if (isTransform) {
+		ay = MARIO_GRAVITY;
+		vx = 0;
+	}
+
+	if (isAdjustHeight) {
+		y -= ADJUST_HEIGHT_MARIO_SMALL_TRANSFORM_BIG;
+		isAdjustHeight = false;
+	}
+
 	if (GetTickCount64() - shoot_start > MARIO_FIRE_TIME_SHOOT_EFFECT && canShoot) {
 		shoot_start = -1;
 		canShoot = false;
@@ -155,6 +177,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 			vy = 0;
 			ay = MARIO_GRAVITY;
 		}
+	}
+	else if (e->nx != 0) {
+		isRunning = false;
 	}
 
 	if (dynamic_cast<CGoomba*>(e->obj))
@@ -291,8 +316,21 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 }
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
-	level = MARIO_LEVEL_BIG;
-	y -= 100;
+	CMushRoom* mushroom = dynamic_cast<CMushRoom*>(e->obj);
+
+	if (e->obj->GetModel() == RED_MUSHROOM) {
+		transform_start = GetTickCount64();
+		isTransform = true;
+		isAdjustHeight = true;
+		level = MARIO_LEVEL_BIG;
+		e->obj->Delete();
+	}
+	
+}
+
+void CMario::OnCollisionWithFlower(LPCOLLISIONEVENT e)
+{
+	level = MARIO_LEVEL_FIRE;
 	e->obj->Delete();
 }
 
@@ -478,6 +516,13 @@ int CMario::GetAniIdBig()
 				aniId = ID_ANI_MARIO_KICK_RIGHT;
 			else
 				aniId = ID_ANI_MARIO_KICK_LEFT;
+		}
+		else if (isTransform) {
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_TRANSFORM_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_TRANSFORM_LEFT;
+
 		}
 		else if (isHoldTurtle) {
 			if (vx == 0)
