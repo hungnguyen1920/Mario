@@ -18,8 +18,8 @@ CSprite::CSprite(int id, int left, int top, int right, int bottom, LPTEXTURE tex
 	sprite.TexCoord.x = this->left / texWidth;
 	sprite.TexCoord.y = this->top / texHeight;
 
-	int spriteWidth = (this->right - this->left + 1);
-	int spriteHeight = (this->bottom - this->top + 1);
+	int spriteWidth = (this->right - this->left);
+	int spriteHeight = (this->bottom - this->top);
 
 	sprite.TexSize.x = spriteWidth / texWidth;
 	sprite.TexSize.y = spriteHeight / texHeight;

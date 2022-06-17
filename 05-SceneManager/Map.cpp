@@ -34,14 +34,14 @@ void Map::DrawMap()
 }
 void Map::GetSpriteTile()
 {
-	for (int id = 0; id < TotalTile; id++)
+	for (int tile = 0; tile < TotalTile; tile++)
 	{
 		{
-			int left = id % NumofColTileSet * TILE_WIDTH;
-			int top = id / NumofColTileSet * TILE_HEIGHT;
+			int left = tile % NumofColTileSet * TILE_WIDTH;
+			int top = tile / NumofColTileSet * TILE_HEIGHT;
 			int right = left + TILE_WIDTH;
 			int bottom = top + TILE_HEIGHT;
-			LPSPRITE SpriteTile = new CSprite(id, left, top, right, bottom, Tex);
+			LPSPRITE SpriteTile = new CSprite(tile, left, top, right, bottom, Tex);
 			Tiles.push_back(SpriteTile);
 		}
 	}

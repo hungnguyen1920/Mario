@@ -288,19 +288,48 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
 
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-
-	if (cx < 0) cx = 0;
-
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	SetCam(player->GetX(), player->GetY());
 
 	PurgeDeletedObjects();
+}
+
+void CPlayScene::SetCam(float cx, float cy)
+{
+	float sw, sh, mw, mh;
+	CGame* game = CGame::GetInstance();
+	sw = game->GetScreenWidth();
+	sh = game->GetScreenHeight();
+	mw = map->GetMapWidth();
+
+	mh = map->GetMapHeight();
+
+	cx -= sw/2;
+	// CamX
+	if (cx <= 0)//Left Edge
+		cx = 0;
+	if (cx >= mw - sw)//Right Edge
+		cx = mw - sw;
+
+	//CamY
+	if (isTurnOnCamY)
+		cy -= sh/2;
+	else
+		cy = mh - sh;
+
+	if (cy <= -HUD_HEIGHT)//Top Edge
+		cy = -HUD_HEIGHT;
+	if (cy + sh >= mh)//Bottom Edge
+		cy = mh - sh;
+
+	//Update CamY when Flying
+	if (player->isFlying)
+		isTurnOnCamY = true;
+	if (cy >= mh - sh && !player->isFlying)
+		isTurnOnCamY = false;
+
+	game->SetCamPos(ceil(cx), ceil(cy));
+	map->SetCamPos(cx, cy);
 }
 
 void CPlayScene::Render()

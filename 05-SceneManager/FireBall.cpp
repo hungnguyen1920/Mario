@@ -1,7 +1,7 @@
 #include "FireBall.h"
 #include "Mario.h"
 #include "PlayScene.h"
-
+#include "define.h"
 CFireBall::CFireBall(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -27,16 +27,24 @@ void CFireBall::OnNoCollision(DWORD dt)
 
 void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CFireBall*>(e->obj)) return;
 
 	if (e->ny != 0 && state == FIRE_BALL_STATE_MARIO_SHOOT)
 	{
 		vy = -FIRE_BALL_BOUNCE_SPEED;
+		if (e->obj->GetType() == EType::ENEMY) {
+			e->obj->SetState(ENEMY_STATE_IS_FIRE_ATTACKED);
+			SetState(FIRE_BALL_DISAPPEAR);
+		}
 	}
 	else if (e->nx != 0)
 	{
-		SetState(FIRE_BALL_DISAPPEAR);
+		if (e->obj->GetType() == EType::OBJECT) {
+			SetState(FIRE_BALL_DISAPPEAR);
+		}
+		if (e->obj->GetType() == EType::ENEMY) {
+			e->obj->SetState(ENEMY_STATE_IS_FIRE_ATTACKED);
+			SetState(FIRE_BALL_DISAPPEAR);
+		}
 	}
 }
 

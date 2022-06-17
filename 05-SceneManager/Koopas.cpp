@@ -61,12 +61,27 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		if (e->obj->GetType() == EType::ENEMY) {
-			e->obj->SetState(ENEMY_STATE_IS_ATTACKED);
+			if (state == KOOPAS_STATE_IS_KICKED) {
+				e->obj->SetState(ENEMY_STATE_IS_ATTACKED);
+			}
+		}
+		else if (e->obj->GetType() == EType::OBJECT) {
+			vx = -vx;
 		}
 	}
 
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
+}
+
+int CKoopas::IsCollidable()
+{
+	if (state == ENEMY_STATE_IS_FIRE_ATTACKED) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
 }
 
 void CKoopas::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
@@ -75,7 +90,7 @@ void CKoopas::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0) {
 		if (state == KOOPAS_STATE_WALKING && model == KOOPAS_RED) {
-			if ( x <= e->obj->GetX() - ADJUST_X_TO_RED_CHANGE_DIRECTION)
+			if (x <= e->obj->GetX() - ADJUST_X_TO_RED_CHANGE_DIRECTION)
 			{
 				vy = 0;
 				vx = KOOPAS_WALKING_SPEED;
@@ -156,6 +171,9 @@ void CKoopas::Render()
 
 	if (model == KOOPAS_GREEN || model == KOOPAS_GREEN_WING)
 	{
+		if (state == ENEMY_STATE_IS_FIRE_ATTACKED) {
+			aniId = ID_ANI_KOOPAS_IS_UPSIDE;
+		}
 		if (vx > 0)
 		{
 			if (state == KOOPAS_STATE_WALKING)
@@ -284,7 +302,7 @@ void CKoopas::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CKoopas::SetState(int state)
@@ -328,6 +346,9 @@ void CKoopas::SetState(int state)
 		isDefend = false;
 		isUpside = false;
 		isKicked = false;
+		break;
+	case ENEMY_STATE_IS_FIRE_ATTACKED:
+		vy = -0.3f;
 		break;
 	}
 

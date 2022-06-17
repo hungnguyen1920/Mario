@@ -70,7 +70,7 @@ void CMushRoom::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMushRoom::SetState(int state)

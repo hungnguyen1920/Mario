@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
-
+#include "define.h"
 #define ID_ANI_COIN 114
 
 #define	COIN_WIDTH 10
@@ -12,7 +12,7 @@
 
 class CCoin : public CGameObject {
 public:
-	CCoin(float x, float y) : CGameObject(x, y) {}
+	CCoin(float x, float y) : CGameObject(x, y) { SetType(EType::COIN); }
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

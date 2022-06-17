@@ -17,8 +17,8 @@ piranhaPlant.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	120	10
-
+0	76	385
+#0	120	10
 #COIN
 4	100	120
 4	120	120
@@ -47,7 +47,7 @@ piranhaPlant.txt
 ############ question brick #######
 #model = 2 ra item la, nam, hoa
 #model = 1 ra tien
-
+6	300	100	2
 ##### PIRANHA PLANT ######
 #8	350	147
 ##### FIRE PIRANHA PLANT ######

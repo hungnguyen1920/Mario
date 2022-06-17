@@ -235,12 +235,13 @@
 
 
 
-
+// LEVEL
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define MARIO_LEVEL_RACCOON 3
 #define MARIO_LEVEL_FIRE 4
 
+// BBOX
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
@@ -251,7 +252,7 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
-
+// TIME
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define POWER_STACK_TIME 250
 #define POWER_STACK_LOST_TIME 250
@@ -262,10 +263,15 @@
 #define MARIO_TIME_DURING_SHOOT 300
 #define MARIO_TRANSFORM_TIME_OUT 1000
 
+// LIME VALUE
+// Power stack
 #define MARIO_POWER_FULL 7
-#define MARIO_FIRE_BALL_LIMIT 2
-#define ADJUST_HEIGHT_MARIO_SMALL_TRANSFORM_BIG 10
 
+// fire ball
+#define MARIO_FIRE_BALL_LIMIT 2
+
+// ADJUST VALUE
+#define ADJUST_HEIGHT_MARIO_SMALL_TRANSFORM_BIG 10
 #define ADJUST_MARIO_SHOOT_FIRE_X 5
 #define ADJUST_MARIO_SHOOT_FIRE_Y 5
 
@@ -310,8 +316,9 @@ public:
 		isRunning = false;
 		coin = 0;
 		isRunningMax = false;
-	
 	}
+
+	// DEFINE BOOLEAN VARIABLE
 	BOOLEAN isSitting = false;
 	BOOLEAN isOnPlatform = false;
 	BOOLEAN isRunning = false;
@@ -332,6 +339,7 @@ public:
 	int powerStack = 0;
 
 
+	// TIME
 	ULONGLONG running_start;
 	ULONGLONG running_stop;
 	ULONGLONG flying_start;
