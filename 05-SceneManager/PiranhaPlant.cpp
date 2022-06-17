@@ -1,7 +1,7 @@
 #include "PiranhaPlant.h"
 #include "Mario.h"
 #include "PlayScene.h"
-
+#include "define.h"
 CPiranhaPlant::CPiranhaPlant(float x, float y) :CGameObject(x, y)
 {
 	this->x = x;
@@ -10,6 +10,7 @@ CPiranhaPlant::CPiranhaPlant(float x, float y) :CGameObject(x, y)
 	this->ay = 0;
 	this->startY = y;
 	this->minY = y - PIRANHA_PLANT_BBOX_HEIGHT;
+	SetType(EType::ENEMY);
 }
 
 void CPiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)

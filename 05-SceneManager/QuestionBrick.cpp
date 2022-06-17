@@ -4,6 +4,8 @@
 #include "Mario.h"
 #include "PlayScene.h"
 #include "Flower.h"
+#include "define.h"
+
 CQuestionBrick::CQuestionBrick(float x, float y, int model) :CGameObject(x, y)
 {
 
@@ -13,6 +15,8 @@ CQuestionBrick::CQuestionBrick(float x, float y, int model) :CGameObject(x, y)
 	this->minY = y - QUESTION_BRICK_BBOX_HEIGHT;
 	this->startY = y;
 	this->startX = x;
+
+	SetType(EType::OBJECT);
 }
 
 void CQuestionBrick::GetBoundingBox(float& left, float& top, float& right, float& bottom)

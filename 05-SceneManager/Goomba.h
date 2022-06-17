@@ -3,7 +3,7 @@
 
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.03f
-
+#define GOOMBA_IS_ATTACK_SPEED_Y 0.3f
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
@@ -20,6 +20,7 @@
 
 #define ID_ANI_GOOMBA_WALKING 30001
 #define ID_ANI_GOOMBA_DIE 30002
+#define ID_ANI_GOOMBA_IS_ATTACKED 30003
 #define ID_ANI_GOOMBA_RED_WALK 30004
 #define ID_ANI_GOOMBA_RED_WING_WALK 30006
 #define ID_ANI_GOOMBA_RED_WING_JUMP 30007
@@ -55,7 +56,7 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable();
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 

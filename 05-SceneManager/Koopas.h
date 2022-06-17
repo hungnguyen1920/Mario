@@ -10,7 +10,7 @@
 #define KOOPAS_BBOX_WIDTH 16
 #define KOOPAS_BBOX_HEIGHT 26
 #define KOOPAS_BBOX_HEIGHT_DEFEND 16
-#define KOOPAS_POSITION_ABSOLUTE_MARIO 14
+#define ADJUST_POSITION_KOOPAS_HELD 14
 #define KOOPAS_COMBACK_HEIGHT_ADJUST 0.15f;
 
 #define KOOPAS_DEFEND_TIMEOUT 8000 // hết thời gian defend ( ra khỏi mai rùa và bắt đầu đi)
@@ -77,6 +77,7 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
 public:
 	CKoopas(float x, float y, int model);

@@ -38,12 +38,12 @@ piranhaPlant.txt
 #5	140	160	16	15	2	51000	52000	53000
 
 #KOOPAS 1: KOOPAS GREEN BASE 2:KOOPAS RED BASE 3: KOOPAS GREEN WING
-#3	500	10	1
+3	200	10	1
 #Portal 
 #50	200	160	216	180	1
 
 #GOOMBA
-2	200	10	1
+2	300	10	1
 ############ question brick #######
 #model = 2 ra item la, nam, hoa
 #model = 1 ra tien
@@ -54,13 +54,16 @@ piranhaPlant.txt
 #MODEL = 1 BIG FIREPIRANHA PLANT
 
 #MODEL = 2 SMALL FIREPIRANHA PLANT
-9	250	142	1
-9	350	150	2
+#9	250	142	1
+#9	350	150	2
 
 ############ PIPE#############
 #model = 1 long pipe
 #model = 2 medium pipe
 
-7	350	150	2
+#7	350	150	2
 
-7	250	148	1
+#7	250	148	1
+
+[TILEMAP]
+Resources\Tilemap\world1-1.txt

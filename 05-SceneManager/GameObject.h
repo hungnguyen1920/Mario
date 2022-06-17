@@ -30,6 +30,8 @@ protected:
 
 	bool isDeleted; 
 
+	int type;
+
 public: 
 	int model = 0;
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
@@ -49,6 +51,10 @@ public:
 	float GetY() { return this->y; }
 	void SetModel(int model) { this->model = model; }
 	int GetModel() { return model; }
+
+	int GetType() { return type; }
+	void SetType(int type) { this->type = type; }
+
 	CGameObject();
 	CGameObject(float x, float y) :CGameObject() { this->x = x; this->y = y; }
 

@@ -2,6 +2,7 @@
 #include "Mario.h"
 #include "PlayScene.h"
 #include "FireBall.h"
+#include "define.h"
 
 CFirePiranhaPlant::CFirePiranhaPlant(float x, float y, int model) : CGameObject(x, y)
 {
@@ -18,6 +19,8 @@ CFirePiranhaPlant::CFirePiranhaPlant(float x, float y, int model) : CGameObject(
 	else {
 		this->minY = y - FPP_SMALL_BBOX_HEIGHT;
 	}
+
+	SetType(EType::ENEMY);
 }
 
 void CFirePiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)

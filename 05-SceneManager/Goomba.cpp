@@ -1,6 +1,6 @@
 #include "Goomba.h"
 #include "debug.h"
-
+#include "define.h"
 CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 {
 	this->model = model;
@@ -13,7 +13,7 @@ CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 	else {
 		SetState(GOOMBA_RED_WING_STATE_WALKING);
 	}
-
+	SetType(EType::ENEMY);
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -61,6 +61,16 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+}
+
+int CGoomba::IsCollidable()
+{
+	if (state == ENEMY_STATE_IS_ATTACKED) {
+		return 0;
+	}
+	else {
+		return 1;
 	}
 }
 
@@ -123,6 +133,12 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CGoomba::Render()
 {
 	int aniId = ID_ANI_GOOMBA_WALKING;
+	if (model == GOOMBA_BASE) {
+		if (state == ENEMY_STATE_IS_ATTACKED)
+		{
+			aniId = ID_ANI_GOOMBA_IS_ATTACKED;
+		}
+	}
 	if (model == GOOMBA_RED_WING) {
 		if (state == GOOMBA_STATE_WALKING) {
 		aniId = ID_ANI_GOOMBA_RED_WALK;
@@ -179,6 +195,9 @@ void CGoomba::SetState(int state)
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
+			break;
+		case ENEMY_STATE_IS_ATTACKED:
+			vy = -GOOMBA_IS_ATTACK_SPEED_Y;
 			break;
 	}
 }
