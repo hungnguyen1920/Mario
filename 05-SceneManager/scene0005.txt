@@ -52,8 +52,7 @@ piranhaPlant.txt
 8	350	147
 ##### FIRE PIRANHA PLANT ######
 #MODEL = 1 BIG FIREPIRANHA PLANT
-#MODEL = 2 SMALL FIREPIRANHA PLANT
-9	250	148	1
+
 ############ PIPE#############
 #model = 1 long pipe
 #model = 2 medium pipe
@@ -61,3 +60,5 @@ piranhaPlant.txt
 7	350	150	2
 
 7	250	148	1
+#MODEL = 2 SMALL FIREPIRANHA PLANT
+9	250	142	1

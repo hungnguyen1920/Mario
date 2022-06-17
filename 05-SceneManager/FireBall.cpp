@@ -40,6 +40,14 @@ void CFireBall::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 }
 
+int CFireBall::IsCollidable() {
+	if (state == FIRE_BALL_STATE_MARIO_SHOOT) {
+		return 1;
+	}
+	else
+		return 0;
+}
+
 void CFireBall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
@@ -67,8 +75,15 @@ void CFireBall::SetState(int state)
 	case FIRE_BALL_STATE_MARIO_SHOOT:
 		vx = mario_nx * FIRE_BALL_SPEED;
 		break;
-	case FIRE_BALL_STATE_ENEMY_SHOOT:
-		vx = -FIRE_BALL_SPEED;
+	case FIRE_BALL_STATE_FPP_SHOOT_NEAR:
+		vx = nx * FIRE_BALL_FPP_SHOOT_SPEED_X_NEAR;
+		vy = ny * FIRE_BALL_FPP_SHOOT_SPEED_Y_NEAR;
+		ay = 0;
+		break;
+	case FIRE_BALL_STATE_FPP_SHOOT_FAR:
+		vx = nx * FIRE_BALL_FPP_SHOOT_SPEED_X_FAR;
+		vy = ny * FIRE_BALL_FPP_SHOOT_SPEED_Y_FAR;
+		ay = 0;
 		break;
 	}
 }

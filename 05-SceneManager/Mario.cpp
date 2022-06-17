@@ -969,7 +969,7 @@ void CMario::Decelerate()
 
 void CMario::ShootFire()
 {
-	CFireBall* fireBall = new CFireBall(x + 5, y + 5);
+	CFireBall* fireBall = new CFireBall(x + ADJUST_MARIO_SHOOT_FIRE_X, y + ADJUST_MARIO_SHOOT_FIRE_Y);
 	fireBall->SetState(FIRE_BALL_STATE_MARIO_SHOOT);
 	ListFire.push_back(fireBall);
 }

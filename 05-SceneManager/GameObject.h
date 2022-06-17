@@ -24,8 +24,8 @@ protected:
 	float vx;
 	float vy;
 
-	int nx;	 
-
+	int nx;
+	int ny;
 	int state;
 
 	bool isDeleted; 
@@ -39,6 +39,8 @@ public:
 
 	int GetState() { return this->state; }
 	int GetDirection() { return this->nx; }
+	void SetDirectionX(int nx) { this->nx = nx; }
+	void SetDirectionY(int ny) { this->ny = ny; }
 	virtual void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
 

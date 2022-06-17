@@ -15,6 +15,7 @@
 #include "MushRoom.h"
 #include "Pipe.h"
 #include "PiranhaPlant.h"
+#include "FirePiranhaPlant.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -129,6 +130,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_QUESTION_BRICK: obj = new CQuestionBrick(x, y, model); break;
 	case OBJECT_TYPE_PIPE: obj = new CPipe(x, y, model); break;
 	case OBJECT_TYPE_PIRANHA: obj = new CPiranhaPlant(x, y); break;
+	case OBJECT_TYPE_FIRE_PIRANHA: obj = new CFirePiranhaPlant(x, y, model); break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 
